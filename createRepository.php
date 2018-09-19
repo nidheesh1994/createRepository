@@ -11,7 +11,7 @@ class createRepository
 
     public function create()
     {
-        $dir = "app/Repository/" . $this->repository;
+        $dir = "./app/Repositories/" . $this->repository;
         if (!file_exists($dir) && !is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
