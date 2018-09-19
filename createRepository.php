@@ -13,7 +13,7 @@ class createRepository
     {
         $dir = "./app/Repositories/" . $this->repository;
         if (!file_exists($dir) && !is_dir($dir)) {
-            mkdir($dir, 0777, true);
+            mkdir($dir, 0755, true);
         }
         $interfaceDir = $dir . "/" . $this->repository . "Interface.php";
         $interfaceContent = "<?php
