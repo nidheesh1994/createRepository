@@ -8,5 +8,5 @@ Download createRepository.php into your base folder of the laravel project.
 
 ### Create a new repository
 
-To create a new repository open terminal and run the command "php createRepository RepositoryName".
+To create a new repository open terminal and run the command "php createRepository.php RepositoryName".
 This will generate a repository folder inside app/Repositories with two files RepositoryNameInterface.php and RepositoryNameRepository.php
