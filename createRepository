@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 
 class createRepository
@@ -9,9 +10,16 @@ class createRepository
         $this->repository = ucfirst($arg);
     }
 
+    /**
+     * Create a Repository pattern files in App/Repository folder
+     * and register them in AppServiceProvider.php
+     *
+     */
     public function create()
     {
         $dir = "./app/Repositories/" . $this->repository;
+
+        //Create directories if doesn't exists
         if (!file_exists($dir) && !is_dir($dir)) {
             mkdir($dir, 0755, true);
         }
@@ -34,6 +42,7 @@ class " . $this->repository . "Repository implements " . $this->repository . "In
 }
 ";
         try {
+            //Create the files
             if (file_put_contents($interfaceDir, $interfaceContent) && file_put_contents($repositoryDir, $repositoryContent)) {
                 $use1 = 'use App\Repositories\\'.$this->repository.'\\'.$this->repository.'Interface;';
                 $use2 = 'use App\Repositories\\'.$this->repository.'\\'.$this->repository.'Repository;';
@@ -45,6 +54,7 @@ class " . $this->repository . "Repository implements " . $this->repository . "In
                 $lines = file($filename, FILE_IGNORE_NEW_LINES);
                 $length = count($lines);
 
+                //Loop through AppServiceProvider.php to register the repository
                 while ($i<$length){
                     if($i==4){
                         $first_array = array_slice($lines,0, $i);
@@ -56,10 +66,14 @@ class " . $this->repository . "Repository implements " . $this->repository . "In
                     }
                     if(strpos($lines[$i],'public function register()')){
                         $startFlag = true;
+                        $i++;
+                        continue;
                     }
                     if($startFlag){
                         if(strpos($lines[$i],'{')){
                             $braces++;
+                            $i++;
+                            continue;
                         }
                     }
                     if($startFlag && strpos($lines[$i],'}') && $braces==1){
