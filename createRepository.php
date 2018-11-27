@@ -35,13 +35,10 @@ class " . $this->repository . "Repository implements " . $this->repository . "In
 ";
         try {
             if (file_put_contents($interfaceDir, $interfaceContent) && file_put_contents($repositoryDir, $repositoryContent)) {
-//                $this->app->bind(CrmInterface::class,CrmRepository::class);
-//                use App\Repositories\Aller\AllerInterface;
                 $use1 = 'use App\Repositories\\'.$this->repository.'\\'.$this->repository.'Interface;';
                 $use2 = 'use App\Repositories\\'.$this->repository.'\\'.$this->repository.'Repository;';
                 $data = '        $this->app->bind('.$this->repository.'Interface::class,'.$this->repository.'Repository::class);';
                 $filename = "app/Providers/AppServiceProvider.php";
-                $file = fopen($filename,"a+");
                 $startFlag = false;
                 $braces = 0;
                 $i = 0;
@@ -55,7 +52,6 @@ class " . $this->repository . "Repository implements " . $this->repository . "In
                         array_push($first_array,$use2);
                         $remaing_array = array_slice($lines, $i);
                         $lines = array_merge($first_array,$remaing_array);
-//                        print_r($lines);
                         $length = count($lines);
                     }
                     if(strpos($lines[$i],'public function register()')){
@@ -64,56 +60,18 @@ class " . $this->repository . "Repository implements " . $this->repository . "In
                     if($startFlag){
                         if(strpos($lines[$i],'{')){
                             $braces++;
-//                            echo $braces;
                         }
                     }
-//                    sleep(1);
                     if($startFlag && strpos($lines[$i],'}') && $braces==1){
                         $first_array = array_slice($lines,0, $i);
                         array_push($first_array, $data);
                         $remaing_array = array_slice($lines, $i);
                         $lines = array_merge($first_array,$remaing_array);
-                        print_r($lines);
                         break;
                     }
                     $i++;
                 }
-                print_r($lines);
                 file_put_contents( $filename , implode( "\n", $lines ) );
-//                foreach ($lines as $line){
-//                    sleep(1);
-//                    echo $line.'
-//                    ';
-//                }
-//                file_put_contents( $filename , implode( "\n", $lines ) );
-//                while(!feof($file)){
-//                    $current = ftell($file);
-//                    if($i==4){
-//                        fseek($file, $current, SEEK_SET);
-//                        fwrite($file,$use1);
-//                        fwrite($file,$use2);
-//                    }
-//                    $line = fgets($file);
-//                    sleep(1);
-//                    echo $line;
-//                    if(strpos($line,'public function register()')){
-//                        $startFlag = true;
-//                        echo 'Got';
-//                    }
-//                    if($startFlag){
-//                        if(strpos($line,'{')){
-//                            $braces++;
-//                            echo $braces;
-//                        }
-//                    }
-//                    if($startFlag && strpos($line,'}') && $braces==1){
-//                        fseek($file, $current, SEEK_SET);
-//                        fwrite($file,$data);
-//                        break;
-//                    }
-//                    $i++;
-//                }
-//                fclose($file);
                 echo 'Repository successfully created
 ';
             }
